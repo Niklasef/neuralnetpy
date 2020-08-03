@@ -1,0 +1,6 @@
+{
+    "python.pythonPath": "C:\\Users\\niklas\\anaconda3\\python.exe",
+    "terminal.integrated.shellArgs.windows": [
+        "PowerShell -NoExit -File C:\\Users\\niklas\\anaconda3\\shell\\condabin\\conda-hook.ps1"
+     ]
+}
