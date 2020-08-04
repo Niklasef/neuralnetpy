@@ -16,9 +16,12 @@ def test_sigmoid_matrix():
         m.sigmoid(np.array([[0.001, 0.002], [0.002, 0.003]])), \
         np.array([[0.50025, 0.50050], [0.50050, 0.50075]]))
 
-def test_sigmoid_plot():
-    x = np.linspace(-10, 10, 1000)
-    plt.show( \
-        plt.plot( \
-            x, \
-            m.sigmoid(x)))
+def test_nnmath_plot():
+    x = np.linspace(-10, 10, 100)
+    plt.plot( \
+        x, \
+        m.sigmoidgrad(x))    
+    plt.plot( \
+        x, \
+        m.sigmoid(x))
+    plt.show()
