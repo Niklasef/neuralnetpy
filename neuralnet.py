@@ -12,4 +12,4 @@ def activate(x, theta):
 
 
 def add_bias_units(matrix):
-    return np.c_[np.ones(A.shape[0]), matrix]
+    return np.c_[np.ones(matrix.shape[0]), matrix]
