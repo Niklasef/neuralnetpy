@@ -11,5 +11,5 @@ def activate(x, theta):
         output=m.sigmoid(input))
 
 
-def add_bias_units(A):
-    return np.c_[np.ones(A.shape[0]), A]
+def add_bias_units(matrix):
+    return np.c_[np.ones(A.shape[0]), matrix]
