@@ -17,7 +17,7 @@ def test_activate_matrix_correct_output():
 
 def test_activate_matrix_correct_input():
     np.testing.\
-        assert_array_almost_equal( 
+        assert_array_almost_equal(
             x=nn.activate(
                 x=np.array(
                     [[0.1, 0.2, 0.3], [0.4, 0.5, 0.6]]),
@@ -26,3 +26,11 @@ def test_activate_matrix_correct_input():
             ).input,
             y=np.array(
                 [[0.5, 0.068], [1.22, 0.167]]))
+
+
+def test_add_bias_units():
+    np.testing.\
+        assert_array_equal(
+            x=nn.add_bias_units(
+                np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])),
+            y=np.array([[1, 1, 2, 3], [1, 4, 5, 6], [1, 7, 8, 9]]))
