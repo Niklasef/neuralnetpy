@@ -6,9 +6,11 @@ def test_activate_matrix_correct_output():
     np.testing.\
         assert_array_almost_equal( 
             x=nn.activate(
-                x=np.array(
-                    [[0.1, 0.2, 0.3], [0.4, 0.5, 0.6]]),
-                theta=np.array(
+                precedent_layer=nn.layer(
+                    input=np.empty([]),
+                    output=np.array([[0.1, 0.2, 0.3], [0.4, 0.5, 0.6]]),
+                    weight=np.empty([])),
+                weight=np.array(
                     [[0.7, 0.8, 0.9], [0.1, 0.11, 0.12]])
             ).output,
             y=np.array(
@@ -19,9 +21,11 @@ def test_activate_matrix_correct_input():
     np.testing.\
         assert_array_almost_equal(
             x=nn.activate(
-                x=np.array(
-                    [[0.1, 0.2, 0.3], [0.4, 0.5, 0.6]]),
-                theta=np.array(
+                precedent_layer=nn.layer(
+                    input=np.empty([]),
+                    output=np.array([[0.1, 0.2, 0.3], [0.4, 0.5, 0.6]]),
+                    weight=np.empty([])),
+                weight=np.array(
                     [[0.7, 0.8, 0.9], [0.1, 0.11, 0.12]])
             ).input,
             y=np.array(
