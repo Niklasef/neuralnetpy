@@ -8,13 +8,13 @@ def test_activate_matrix_correct_output():
             x=nn.activate(
                 precedent_layer=nn.layer(
                     input=np.empty([]),
-                    output=np.array([[0.1, 0.2, 0.3], [0.4, 0.5, 0.6]]),
+                    output=np.array([[0.1, 0.2], [0.3, 0.4]]),
                     weight=np.empty([])),
                 weight=np.array(
                     [[0.7, 0.8, 0.9], [0.1, 0.11, 0.12]])
             ).output,
             y=np.array(
-                [[0.622459, 0.516993], [0.772064, 0.541653]]))
+                [[0.723122, 0.533699], [0.785835, 0.545127]]))
 
 
 def test_activate_matrix_correct_input():
@@ -23,13 +23,13 @@ def test_activate_matrix_correct_input():
             x=nn.activate(
                 precedent_layer=nn.layer(
                     input=np.empty([]),
-                    output=np.array([[0.1, 0.2, 0.3], [0.4, 0.5, 0.6]]),
+                    output=np.array([[0.1, 0.2], [0.3, 0.4]]),
                     weight=np.empty([])),
                 weight=np.array(
                     [[0.7, 0.8, 0.9], [0.1, 0.11, 0.12]])
             ).input,
             y=np.array(
-                [[0.5, 0.068], [1.22, 0.167]]))
+                [[0.96, 0.135], [1.3, 0.181]]))
 
 
 def test_add_bias_units():
