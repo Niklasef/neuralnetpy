@@ -38,3 +38,7 @@ def activate(precedent_layer, weight):
 
 def add_bias_units(matrix):
     return np.c_[np.ones(matrix.shape[0]), matrix]
+
+
+def remove_bias_units(matrix):
+    return matrix[:, 1:]
