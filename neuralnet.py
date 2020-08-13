@@ -15,16 +15,16 @@ def cost(layer_one, layer_two_weight, layer_three_weight, y):
         layer_three_weight)
     return J(
         h=layer_three.output,
-        y=OneHotEncoder(sparse=False).fit_transform(y),
+        Y=OneHotEncoder(sparse=False).fit_transform(y),
         m=layer_one.output.shape[0])
 
 
-def J(h, y, m):
+def J(h, Y, m):
     return \
         (np.sum(
             np.sum(
-                (-y * np.log(h))
-                - ((1-y) * (np.log(1-h)))))) \
+                (-Y * np.log(h))
+                - ((1-Y) * (np.log(1-h)))))) \
         / m
 
 
