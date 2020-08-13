@@ -1,9 +1,13 @@
 from collections import namedtuple
-import nnmath as m
+import nnmath as nnm
 import numpy as np
 from sklearn.preprocessing import OneHotEncoder
 
 layer = namedtuple("layer", ["input", "output", "weight"])
+cost_result = namedtuple("cost_result", [
+    "J",
+    "layer_two_weight_grad",
+    "layer_three_weight_grad"])
 
 
 def cost(layer_one, layer_two_weight, layer_three_weight, y):
@@ -13,10 +17,21 @@ def cost(layer_one, layer_two_weight, layer_three_weight, y):
     layer_three = activate(
         layer_two,
         layer_three_weight)
-    return J(
-        h=layer_three.output,
-        Y=OneHotEncoder(sparse=False).fit_transform(y),
-        m=layer_one.output.shape[0])
+    m = layer_one.output.shape[0]
+    Y = OneHotEncoder(sparse=False).fit_transform(y)
+    delta3 = layer_three.output - Y
+    Delta2 = np.transpose(delta3) @ add_bias_units(layer_two.output)
+    delta2 = \
+        (delta3 @ remove_bias_units(layer_three_weight)) \
+        * nnm.sigmoid_grad(layer_two.input)
+    Delta1 = np.transpose(delta2) @ add_bias_units(layer_one.output)
+    return cost_result(
+        J=J(
+            h=layer_three.output,
+            Y=Y,
+            m=m),
+        layer_two_weight_grad=Delta1/m,
+        layer_three_weight_grad=Delta2/m)
 
 
 def J(h, Y, m):
@@ -32,7 +47,7 @@ def activate(precedent_layer, weight):
     input = add_bias_units(precedent_layer.output) @ np.transpose(weight)
     return layer(
         input=input,
-        output=m.sigmoid(input),
+        output=nnm.sigmoid(input),
         weight=weight)
 
 
