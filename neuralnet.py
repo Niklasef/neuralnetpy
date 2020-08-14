@@ -57,3 +57,25 @@ def add_bias_units(matrix):
 
 def remove_bias_units(matrix):
     return matrix[:, 1:]
+
+
+def to_vector(matrix_one, matrix_two):
+    return np.concatenate((np.ravel(matrix_one), np.ravel(matrix_two)))
+
+
+def to_matrices(
+    array,
+    matrix_one_rows,
+    matrix_one_columns,
+    matrix_two_rows,
+    matrix_two_columns
+):
+    split_index = matrix_one_rows * matrix_one_columns
+    return (
+
+        np.reshape(
+            array[0:split_index],
+            (matrix_one_rows, matrix_one_columns)),
+        np.reshape(
+            array[split_index:array.shape[0]],
+            (matrix_two_rows, matrix_two_columns)))

@@ -1,4 +1,5 @@
 import numpy as np
+from scipy.optimize import minimize
 import neuralnet as nn
 
 
@@ -113,3 +114,26 @@ def test_cost():
             [0.11105, 0.05757, 0.05778, 0.05592, 0.05369, 0.05315],
             [0.09740, 0.05045, 0.05075, 0.04916, 0.04714, 0.04656]]),
         decimal=5)
+
+
+def test_to_vector():
+    np.testing.assert_array_almost_equal(
+        x=nn.to_vector(
+            np.array([
+                [1, 2, 3],
+                [4, 5, 6]]),
+            np.array([
+                [7, 8],
+                [9, 10]])),
+        y=np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]))
+
+
+def test_to_matrices():
+    matrices = nn.to_matrices(
+            np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]), 2, 3, 2, 2)
+    np.testing.assert_array_almost_equal(
+        x=matrices[0],
+        y=np.array([[1, 2, 3], [4, 5, 6]]))
+    np.testing.assert_array_almost_equal(
+        x=matrices[1],
+        y=np.array([[7, 8], [9, 10]]))        
