@@ -10,6 +10,34 @@ cost_result = namedtuple("cost_result", [
     "layer_three_weight_grad"])
 
 
+def run(
+    params,
+    matrix_one_rows,
+    matrix_one_columns,
+    matrix_two_rows,
+    matrix_two_columns,
+    X,
+    y
+):
+    weights = to_matrices(
+        params,
+        matrix_one_rows,
+        matrix_one_columns,
+        matrix_two_rows,
+        matrix_two_columns)
+    cost_result = cost(
+        layer_one=layer(
+            input=np.empty([]),
+            output=X,
+            weight=np.empty([])),
+        layer_two_weight=weights[0],
+        layer_three_weight=weights[1],
+        y=y)
+    return cost_result.J, to_vector(
+        cost_result.layer_two_weight_grad,
+        cost_result.layer_three_weight_grad)
+
+
 def cost(layer_one, layer_two_weight, layer_three_weight, y):
     layer_two = activate(
         layer_one,
