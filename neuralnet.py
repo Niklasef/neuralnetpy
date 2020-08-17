@@ -13,10 +13,10 @@ iteration = namedtuple("iteration", [
 
 def minimize(
     params,
-    matrix_one_rows,
-    matrix_one_columns,
-    matrix_two_rows,
-    matrix_two_columns,
+    weight_one_rows,
+    weight_one_columns,
+    weight_two_rows,
+    weight_two_columns,
     X,
     y
 ):
@@ -24,10 +24,10 @@ def minimize(
         fun=run_weights_parameterized,
         x0=params,
         args=(
-            matrix_one_rows,
-            matrix_one_columns,
-            matrix_two_rows,
-            matrix_two_columns,
+            weight_one_rows,
+            weight_one_columns,
+            weight_two_rows,
+            weight_two_columns,
             X,
             y),
         method='Newton-CG',
@@ -37,19 +37,19 @@ def minimize(
 
 def run_weights_parameterized(
     params,
-    matrix_one_rows,
-    matrix_one_columns,
-    matrix_two_rows,
-    matrix_two_columns,
+    weight_one_rows,
+    weight_one_columns,
+    weight_two_rows,
+    weight_two_columns,
     X,
     y
 ):
     weights = to_matrices(
         params,
-        matrix_one_rows,
-        matrix_one_columns,
-        matrix_two_rows,
-        matrix_two_columns)
+        weight_one_rows,
+        weight_one_columns,
+        weight_two_rows,
+        weight_two_columns)
     iteration = run(
         layer_one=layer(
             input=np.empty([]),
