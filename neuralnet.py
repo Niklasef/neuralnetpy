@@ -1,6 +1,7 @@
 from collections import namedtuple
 import nnmath as nnm
 import numpy as np
+import scipy as sp
 from sklearn.preprocessing import OneHotEncoder
 
 layer = namedtuple("layer", ["input", "output", "weight"])
@@ -8,6 +9,30 @@ cost_result = namedtuple("cost_result", [
     "J",
     "layer_two_weight_grad",
     "layer_three_weight_grad"])
+
+
+def minimize(
+    params,
+    matrix_one_rows,
+    matrix_one_columns,
+    matrix_two_rows,
+    matrix_two_columns,
+    X,
+    y
+):
+    return sp.optimize.minimize(
+        fun=run,
+        x0=params,
+        args=(
+            matrix_one_rows,
+            matrix_one_columns,
+            matrix_two_rows,
+            matrix_two_columns,
+            X,
+            y),
+        method='Newton-CG',
+        jac=True,
+        options={'maxiter': 150}).x
 
 
 def run(
