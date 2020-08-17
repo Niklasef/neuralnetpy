@@ -54,9 +54,9 @@ def test_remove_bias_units():
                 [7, 8, 9]]))
 
 
-def test_J():
+def test_cost():
     np.testing.assert_almost_equal(
-        actual=nn.J(
+        actual=nn.cost(
             h=np.array([
                 [0.51457, 0.51113, 0.49746],
                 [0.51459, 0.51114, 0.49745],
@@ -73,8 +73,8 @@ def test_J():
         desired=2.10095659)
 
 
-def test_cost():
-    cost = nn.cost(
+def test_run():
+    iteration = nn.run(
         layer_one=nn.layer(
             input=np.empty([]),
             output=np.array([
@@ -96,10 +96,10 @@ def test_cost():
             [0.01411, -0.02794, 0.04121, -0.05365, 0.06502, -0.07509]]),
         y=np.array([[2], [3], [1], [2], [3]]))
     np.testing.assert_almost_equal(
-        actual=cost.J,
+        actual=iteration.J,
         desired=2.10094675)
     np.testing.assert_array_almost_equal(
-        x=cost.layer_two_weight_grad,
+        x=iteration.layer_two_weight_grad,
         y=np.array([
             [-0.0092782381, -0.0000030527, -0.0001750625, -0.0000962684],
             [0.0088991606, 0.0000142892, 0.0002331484, 0.0001179851],
@@ -107,7 +107,7 @@ def test_cost():
             [0.0076281765, 0.0000369898, 0.0003353225, 0.0001532494],
             [-0.0067479759, -0.0000468772, -0.0003762188, -0.0001665629]]))
     np.testing.assert_array_almost_equal(
-        x=cost.layer_three_weight_grad,
+        x=iteration.layer_three_weight_grad,
         y=np.array([
             [0.31454, 0.16409, 0.16456, 0.15833, 0.15112, 0.14956],
             [0.11105, 0.05757, 0.05778, 0.05592, 0.05369, 0.05315],
@@ -115,8 +115,8 @@ def test_cost():
         decimal=5)
 
 
-def test_run():
-    result = nn.run(
+def test_run_weights_parameterized():
+    result = nn.run_weights_parameterized(
         params=np.array([
             0.084147, -0.027942, -0.099999, -0.028790, 0.090930, 0.065699,
             -0.053657, -0.096140, 0.014112, 0.098936, 0.042017, -0.075099,
@@ -172,7 +172,7 @@ def test_minimize():
         X=X,
         y=y)
     print("min_result ", min_result)
-    cost = nn.run(
+    cost = nn.run_weights_parameterized(
         params=min_result,
         matrix_one_rows=5,
         matrix_one_columns=4,

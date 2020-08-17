@@ -5,7 +5,7 @@ import scipy as sp
 from sklearn.preprocessing import OneHotEncoder
 
 layer = namedtuple("layer", ["input", "output", "weight"])
-cost_result = namedtuple("cost_result", [
+iteration = namedtuple("iteration", [
     "J",
     "layer_two_weight_grad",
     "layer_three_weight_grad"])
@@ -21,7 +21,7 @@ def minimize(
     y
 ):
     return sp.optimize.minimize(
-        fun=run,
+        fun=run_weights_parameterized,
         x0=params,
         args=(
             matrix_one_rows,
@@ -35,7 +35,7 @@ def minimize(
         options={'maxiter': 150}).x
 
 
-def run(
+def run_weights_parameterized(
     params,
     matrix_one_rows,
     matrix_one_columns,
@@ -50,7 +50,7 @@ def run(
         matrix_one_columns,
         matrix_two_rows,
         matrix_two_columns)
-    cost_result = cost(
+    iteration = run(
         layer_one=layer(
             input=np.empty([]),
             output=X,
@@ -58,12 +58,12 @@ def run(
         layer_two_weight=weights[0],
         layer_three_weight=weights[1],
         y=y)
-    return cost_result.J, to_vector(
-        cost_result.layer_two_weight_grad,
-        cost_result.layer_three_weight_grad)
+    return (iteration.J, to_vector(
+        iteration.layer_two_weight_grad,
+        iteration.layer_three_weight_grad))
 
 
-def cost(layer_one, layer_two_weight, layer_three_weight, y):
+def run(layer_one, layer_two_weight, layer_three_weight, y):
     layer_two = activate(
         layer_one,
         layer_two_weight)
@@ -78,8 +78,8 @@ def cost(layer_one, layer_two_weight, layer_three_weight, y):
         (delta3 @ remove_bias_units(layer_three_weight)) \
         * nnm.sigmoid_grad(layer_two.input)
     Delta1 = np.transpose(delta2) @ add_bias_units(layer_one.output)
-    return cost_result(
-        J=J(
+    return iteration(
+        J=cost(
             h=layer_three.output,
             Y=Y,
             m=m),
@@ -87,7 +87,7 @@ def cost(layer_one, layer_two_weight, layer_three_weight, y):
         layer_three_weight_grad=Delta2/m)
 
 
-def J(h, Y, m):
+def cost(h, Y, m):
     return \
         (np.sum(
             np.sum(
