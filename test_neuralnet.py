@@ -149,7 +149,7 @@ def test_run_weights_parameterized():
         decimal=5)
 
 
-def test_minimize():
+def test_learn():
     X = np.array([
             [0.084147, -0.027942, -0.099999],
             [0.090930, 0.065699, -0.053657],
@@ -157,7 +157,7 @@ def test_minimize():
             [-0.075680, 0.041212, 0.099061],
             [-0.095892, -0.054402, 0.065029]])
     y = np.array([[2], [3], [1], [2], [3]])
-    min_result = nn.minimize(
+    learned_weights = nn.learn(
         params=np.array([
             0.084147, -0.027942, -0.099999, -0.028790, 0.090930, 0.065699,
             -0.053657, -0.096140, 0.014112, 0.098936, 0.042017, -0.075099,
@@ -171,23 +171,23 @@ def test_minimize():
         weight_two_columns=6,
         X=X,
         y=y)
-    print("min_result ", min_result)
-    cost = nn.run_weights_parameterized(
-        params=min_result,
-        weight_one_rows=5,
-        weight_one_columns=4,
-        weight_two_rows=3,
-        weight_two_columns=6,
-        X=np.array([
+    print("learned_weights ", learned_weights)
+    min_cost = nn.run(
+        layer_one=nn.layer(
+            input=np.empty([]),
+            output=np.array([
                 [0.084147, -0.027942, -0.099999],
                 [0.090930, 0.065699, -0.053657],
                 [0.014112, 0.098936, 0.042017],
                 [-0.075680, 0.041212, 0.099061],
                 [-0.095892, -0.054402, 0.065029]]),
+            weight=np.empty([])),
+        layer_two_weight=learned_weights[0],
+        layer_three_weight=learned_weights[1],
         y=np.array([[2], [3], [1], [2], [3]]))[0]
-    print("cost ", cost)
+    print("min_cost ", min_cost)
     np.testing.assert_almost_equal(
-        actual=cost,
+        actual=min_cost,
         desired=0.0003950404817779263)
 
 

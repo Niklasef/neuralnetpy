@@ -11,7 +11,7 @@ iteration = namedtuple("iteration", [
     "layer_three_weight_grad"])
 
 
-def minimize(
+def learn(
     params,
     weight_one_rows,
     weight_one_columns,
@@ -20,19 +20,24 @@ def minimize(
     X,
     y
 ):
-    return sp.optimize.minimize(
-        fun=run_weights_parameterized,
-        x0=params,
-        args=(
-            weight_one_rows,
-            weight_one_columns,
-            weight_two_rows,
-            weight_two_columns,
-            X,
-            y),
-        method='Newton-CG',
-        jac=True,
-        options={'maxiter': 150}).x
+    return to_matrices(
+        sp.optimize.minimize(
+            fun=run_weights_parameterized,
+            x0=params,
+            args=(
+                weight_one_rows,
+                weight_one_columns,
+                weight_two_rows,
+                weight_two_columns,
+                X,
+                y),
+            method='Newton-CG',
+            jac=True,
+            options={'maxiter': 150}).x,
+        weight_one_rows,
+        weight_one_columns,
+        weight_two_rows,
+        weight_two_columns)
 
 
 def run_weights_parameterized(
@@ -58,9 +63,11 @@ def run_weights_parameterized(
         layer_two_weight=weights[0],
         layer_three_weight=weights[1],
         y=y)
-    return (iteration.J, to_vector(
-        iteration.layer_two_weight_grad,
-        iteration.layer_three_weight_grad))
+    return (
+        iteration.J,
+        to_vector(
+            iteration.layer_two_weight_grad,
+            iteration.layer_three_weight_grad))
 
 
 def run(layer_one, layer_two_weight, layer_three_weight, y):
@@ -125,7 +132,6 @@ def to_matrices(
 ):
     split_index = matrix_one_rows * matrix_one_columns
     return (
-
         np.reshape(
             array[0:split_index],
             (matrix_one_rows, matrix_one_columns)),
