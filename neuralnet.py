@@ -12,49 +12,40 @@ iteration = namedtuple("iteration", [
 
 
 def learn(
-    params,
-    weight_one_rows,
-    weight_one_columns,
-    weight_two_rows,
-    weight_two_columns,
+    weights_vector,
+    weight_one_size,
     X,
     y
 ):
     return to_matrices(
         sp.optimize.minimize(
-            fun=run_weights_parameterized,
-            x0=params,
+            fun=run_weights_vectorized,
+            x0=weights_vector,
             args=(
-                weight_one_rows,
-                weight_one_columns,
-                weight_two_rows,
-                weight_two_columns,
+                weight_one_size,
                 X,
                 y),
             method='Newton-CG',
             jac=True,
             options={'maxiter': 150}).x,
-        weight_one_rows,
-        weight_one_columns,
-        weight_two_rows,
-        weight_two_columns)
+        matrix_one_rows=weight_one_size,
+        matrix_one_columns=X.shape[1] + 1,
+        matrix_two_rows=np.unique(y).shape[0],
+        matrix_two_columns=weight_one_size + 1)
 
 
-def run_weights_parameterized(
-    params,
-    weight_one_rows,
-    weight_one_columns,
-    weight_two_rows,
-    weight_two_columns,
+def run_weights_vectorized(
+    weights_vector,
+    weight_one_size,
     X,
     y
 ):
     weights = to_matrices(
-        params,
-        weight_one_rows,
-        weight_one_columns,
-        weight_two_rows,
-        weight_two_columns)
+        weights_vector,
+        matrix_one_rows=weight_one_size,
+        matrix_one_columns=X.shape[1] + 1,
+        matrix_two_rows=np.unique(y).shape[0],
+        matrix_two_columns=weight_one_size + 1)
     iteration = run(
         layer_one=layer(
             input=np.empty([]),
@@ -70,7 +61,12 @@ def run_weights_parameterized(
             iteration.layer_three_weight_grad))
 
 
-def run(layer_one, layer_two_weight, layer_three_weight, y):
+def run(
+    layer_one,
+    layer_two_weight,
+    layer_three_weight,
+    y
+):
     layer_two = activate(
         layer_one,
         layer_two_weight)
